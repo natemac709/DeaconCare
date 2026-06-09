@@ -45,6 +45,8 @@ namespace DeaconCare
                 // In production, your model assignment mapping execution occurs right here:
                 // await _supabaseClient.From<DiaconalLedger>().Where(x => x.Id == taskId).Update(...);
 
+                await Task.CompletedTask;
+                
                 return true;
             }
             catch (Exception ex)
