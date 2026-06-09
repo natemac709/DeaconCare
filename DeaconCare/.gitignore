@@ -1,9 +1,0 @@
-# Ignore local runtime configuration files containing sensitive secrets
-.env
-appsettings.json
-appsettings.Development.json
-
-# Ignore .NET build artifacts and compiled output folder tracks
-bin/
-obj/
-.vs/
