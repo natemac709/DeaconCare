@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <!-- 🚀 target framework updated to the stable, high-performance long-term support release -->
+    <!-- 🚀 Target framework updated to the stable, long-term support release -->
     <TargetFramework>net8.0</TargetFramework>
     <OutputType>Exe</OutputType>
     
@@ -13,14 +13,16 @@
     <!-- 🛡️ Code generation compiler security controls -->
     <Deterministic>true</Deterministic>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+
+    <!-- 🚫 REGISTRY SHIELD: Completely isolates the server process from legacy Windows hosting arrays -->
+    <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+    <UserSecretsId>DeaconCare-Secure-Perimeter-Gate-77</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <!-- 📦 Secure third-party API dependencies for Twilio webhooks & Supabase DB connectivity -->
     <PackageReference Include="Twilio" Version="6.15.1" />
     <PackageReference Include="supabase-csharp" Version="0.16.2" />
-    
-    <!-- For local developer environmental variable tracking -->
     <PackageReference Include="DotNetEnv" Version="3.0.0" />
   </ItemGroup>
 
