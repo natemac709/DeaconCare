@@ -1,6 +1,6 @@
 # 🏛️ DeaconCare
 
-**A secure, infinite-scope middleware engine optimizing church-wide diaconal logistics and communication.**
+**A secure, church-scoped middleware engine optimizing diaconal logistics and communication.**
 
 DeaconCare is an invisible, zero-interface workflow platform designed to organize and coordinate church-wide service lanes according to historic biblical polity. By mapping all church activities into three universal operational cadences (Blocks, Series, and Fluid Pulses), the system scales fluidly across every square inch of church life. 
 
