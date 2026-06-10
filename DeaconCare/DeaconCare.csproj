@@ -4,7 +4,7 @@
     <!-- 🚀 Target framework updated to the stable, long-term support release -->
     <TargetFramework>net8.0</TargetFramework>
     <OutputType>Exe</OutputType>
-    
+	
     <!-- 🔒 Enforce absolute strict modern C# programming standards -->
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>

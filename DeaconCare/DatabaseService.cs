@@ -1,30 +1,18 @@
 using System;
 using System.Threading.Tasks;
-using Supabase;
 
 namespace DeaconCare
 {
     public class DatabaseService
     {
-        private readonly Client _supabaseClient;
+        // Comment out or remove the client tracker object to isolate your local test track from internet dependencies
+        // private readonly Supabase.Client? _supabaseClient;
 
         public DatabaseService()
         {
-            // Fetch secure local environment values or fall back to safe local mock variables
-            string url = Environment.GetEnvironmentVariable("SUPABASE_URL") ?? "https://localhost:5001";
-            string key = Environment.GetEnvironmentVariable("SUPABASE_SERVICE_ROLE_KEY") ?? "placeholder_mock_jwt_secret_token";
-
-            // Enforce defensive pattern validation check before memory allocation
-            if (string.IsNullOrEmpty(url) || !url.StartsWith("http"))
-            {
-                url = "https://localhost:5001"; // Secure local execution safety default
-            }
-
-            // Initialize the database client safely over forced SSL/TLS paths
-            var options = new SupabaseOptions { AutoConnectRealtime = false };
-            _supabaseClient = new Client(url, key, options);
+            // Pure local execution sandbox initialization block (Zero external dependencies)
+            Console.WriteLine("🛡️ [Data Sandbox] Running in isolated offline verification mode.");
         }
-
 
         /// <summary>
         /// 🟢 Logistical Ledger Commit: Process incoming status changes cleanly 
@@ -34,7 +22,7 @@ namespace DeaconCare
         {
             try
             {
-                // Verify the incoming check code maps strictly to a proper state framework
+                // Verify the incoming check code maps strictly to a proper state framework:
                 // 1 = Logistical Success / Completed
                 // 2 = Escalated to Elder Session / Shielded from Deacons
                 if (statusCode != "1" && statusCode != "2")
@@ -43,15 +31,10 @@ namespace DeaconCare
                     return false;
                 }
 
-                // Execute a strict, token-bound database row mutation.
-                // Row-Level Security (RLS) on Supabase guarantees this token can only touch this row.
+                // Execute a strict, token-bound database row mutation simulation
                 Console.WriteLine($"[Database Engine] Safely updating Task {taskId} for Volunteer {volunteerId} to State {statusCode}.");
-                
-                // In production, your model assignment mapping execution occurs right here:
-                // await _supabaseClient.From<DiaconalLedger>().Where(x => x.Id == taskId).Update(...);
 
                 await Task.CompletedTask;
-                
                 return true;
             }
             catch (Exception ex)

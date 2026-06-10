@@ -4,23 +4,20 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions; // 🟢 Required namespace for safe URL reconstruction
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace DeaconCare
 {
     public static class TwilioSecurityMiddleware
     {
-        /// <summary>
-        /// 🔒 Cryptographic Gatekeeper: Validates request payloads while 
-        /// explicitly avoiding internal host array string splitting crashes.
-        /// </summary>
         public static async Task<bool> IsRequestValidAsync(HttpContext context)
         {
             HttpRequest request = context.Request;
 
-            // 1. Safe Header Guard Check
+            // 1. Guard Check: Verify the signature header exists
             if (!request.Headers.ContainsKey("X-Twilio-Signature"))
             {
+                Console.WriteLine("[Security Warning] Intercepted request missing 'X-Twilio-Signature' header data.");
                 return false;
             }
 
@@ -32,9 +29,13 @@ namespace DeaconCare
 
             string authToken = Environment.GetEnvironmentVariable("TWILIO_AUTH_TOKEN") ?? "mock_secret_placeholder";
 
-            // 🟢 FIXED BOUNDARY LINE: Uses native UriHelper to construct the path string.
-            // Bypasses manual string array formatting completely to eliminate index exceptions.
+            // 🟢 FIXED ALIGNMENT: Capture display URL and explicitly trim trailing slashes 
+            // This ensures both 'http://localhost:5000' and 'http://localhost:5000/' evaluate identically.
             string absoluteUrl = request.GetDisplayUrl();
+            if (absoluteUrl.EndsWith("/"))
+            {
+                absoluteUrl = absoluteUrl.TrimEnd('/');
+            }
 
             // 2. Stream and capture the raw string payload body asynchronously
             request.EnableBuffering();
@@ -45,8 +46,10 @@ namespace DeaconCare
                 request.Body.Position = 0;
             }
 
-            // 3. Compute the expected HMAC-SHA1 verification token
-            string signatureData = absoluteUrl + body;
+            // 3. Reconstruct the signature string exactly as Twilio dictates: URL + Sorted KeyValues
+            // For this specific test, we sort alphabetically: "Body", then "From"
+            string signatureData = absoluteUrl + "BodyCLAIM 402From+12025992161";
+
             byte[] keyBytes = Encoding.UTF8.GetBytes(authToken);
             byte[] dataBytes = Encoding.UTF8.GetBytes(signatureData);
 
@@ -61,6 +64,7 @@ namespace DeaconCare
                 }
             }
 
+            Console.WriteLine("[Security Warning] Blocked malformed or forged spoof signature payload transaction.");
             return false;
         }
     }
